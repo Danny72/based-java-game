@@ -3,9 +3,9 @@ package com.me.based.level.tile;
 import com.me.based.graphics.Screen;
 import com.me.based.graphics.Sprite;
 
-public class GrassTile extends Tile {
+public class VoidTile extends Tile {
 
-	public GrassTile(Sprite sprite) {
+	public VoidTile(Sprite sprite) {
 		super(sprite);
 	}
 	

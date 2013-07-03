@@ -2,6 +2,7 @@ package com.me.based.graphics;
 
 import java.util.Random;
 
+import com.me.based.entity.mob.Player;
 import com.me.based.level.tile.Tile;
 
 public class Screen {
@@ -10,7 +11,9 @@ public class Screen {
 	public int[] pixels;
 	public final int MAP_SIZE = 64;
 	public final int MAP_SIZE_MASK = MAP_SIZE - 1;
-	
+
+	public int xoffset, yoffset;
+
 	public int[] tiles = new int[MAP_SIZE * MAP_SIZE];
 	private Random random = new Random();
 
@@ -18,10 +21,18 @@ public class Screen {
 		width = w;
 		height = h;
 		pixels = new int[width * height];
-		
-		for (int i =0 ; i < MAP_SIZE*MAP_SIZE; i++) {
+
+		for (int i = 0; i < MAP_SIZE * MAP_SIZE; i++) {
 			tiles[i] = random.nextInt(0xffffff);
 		}
+	}
+
+	public int get_width() {
+		return width;
+	}
+
+	public int get_height() {
+		return height;
 	}
 
 	//this clears the pixel array of anything previously added to buffer
@@ -31,26 +42,52 @@ public class Screen {
 		}
 	}
 
-	//loads up the buffer with whatever is to be drawn onto the screen
-	public void render(int xoffset, int yoffset) {
-
-		for (int y = 0; y < height; y++) {
-			int yp = y + yoffset;
-			if (yp < 0 || yp >= height) continue;
-			for (int x = 0; x < width; x++) {
-				int xp = x + xoffset;
-				if (xp < 0 || xp >= width) continue;
-				pixels[xp + (yp * width)] = Sprite.grass.pixels[(x&15) + (y&15) * Sprite.grass.SIZE];
+	//renders a specified tile onto the screen
+	public void render_tile(int xp, int yp, Tile tile) {
+		//flips the move x y direction
+		xp -= xoffset;
+		yp -= yoffset;
+		for (int y = 0; y < tile.sprite.SIZE; y++) {
+			int y_abs = y + yp;
+			for (int x = 0; x < tile.sprite.SIZE; x++) {
+				int x_abs = x + xp;
+				//if a tile is completely off the screen, don't render it
+				//x_abs allows us to partially render tiles on the x-axis at 0
+				if (x_abs < -tile.sprite.SIZE || x_abs >= width || y_abs < 0 || y_abs >= height) break;
+				if (x_abs < 0) x_abs = 0;
+				pixels[x_abs + (y_abs * width)] = tile.sprite.pixels[x + y * tile.sprite.SIZE];
 			}
 		}
 	}
-	
-	//renders a specified tile onto the screen
-	public void render_tile(int xp, int yp, Tile tile) {
-		
-		for (int y = 0; y < tile.sprite.SIZE; y++) {
+
+	public void render_player(int xp, int yp, Sprite sprite, boolean flip) {
+		xp -= xoffset;
+		yp -= yoffset;
+		for (int y = 0; y < sprite.SIZE; y++) {
 			int y_abs = y + yp;
+			for (int x = 0; x < sprite.SIZE; x++) {
+				int x_abs = x + xp;
+				
+				//this flips the sprite along the x-axis if flip
+				int xsprite = x;
+				if (flip) xsprite = (sprite.SIZE - 1) - x;
+				
+				//if a tile is completely off the screen, don't render it
+				//x_abs allows us to partially render tiles on the x-axis at 0
+				if (x_abs < -sprite.SIZE || x_abs >= width || y_abs < 0 || y_abs >= height) break;
+				if (x_abs < 0) x_abs = 0;
+
+				//this only renders if the pixel isn't alpha pink
+				int color = sprite.pixels[xsprite + y * sprite.SIZE];
+				if (color != 0xFFFF00FF) pixels[x_abs + (y_abs * width)] = color;
+
+			}
 		}
+	}
+
+	public void set_offset(int newx_offset, int newy_offset) {
+		xoffset = newx_offset;
+		yoffset = newy_offset;
 	}
 
 }
