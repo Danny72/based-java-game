@@ -3,12 +3,11 @@ package com.me.based.entity.mob;
 import com.me.based.graphics.Screen;
 import com.me.based.graphics.Sprite;
 import com.me.based.input.Keyboard;
+import com.me.based.input.Mouse;
 
 public class Player extends Mob {
 
-	private Keyboard input;
-	private int anim = 0;
-
+	
 	public Player(Keyboard input, int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -27,14 +26,25 @@ public class Player extends Mob {
 		if (input.down) newy += 2;
 		if (input.left) newx -= 2;
 		if (input.right) newx += 2;
-
+		
 		if (newx != 0 || newy != 0) {
 			move(newx, newy);
 			moving = true;
 		} else {
 			moving = false;
 		}
+		
+		update_shooting();
+	}
 
+	private void update_shooting() {
+		
+		if (Mouse.getb() == 1) {
+			double dx = Mouse.getx() - 300/2;
+			double dy = Mouse.gety() - 168/2;
+			//System.out.println(Math.atan2(dy,dx));
+			shoot(x, y, Math.atan2(dy,dx));
+		}
 	}
 
 	public void render(Screen screen) {

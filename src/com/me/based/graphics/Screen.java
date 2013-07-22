@@ -55,7 +55,9 @@ public class Screen {
 				//x_abs allows us to partially render tiles on the x-axis at 0
 				if (x_abs < -tile.sprite.SIZE || x_abs >= width || y_abs < 0 || y_abs >= height) break;
 				if (x_abs < 0) x_abs = 0;
-				pixels[x_abs + (y_abs * width)] = tile.sprite.pixels[x + y * tile.sprite.SIZE];
+				int colour = tile.sprite.pixels[x + y * tile.sprite.SIZE];
+				if (colour != 0xFFFF00FF) pixels[x_abs + (y_abs * width)] = colour;
+				//pixels[x_abs + (y_abs * width)] = tile.sprite.pixels[x + y * tile.sprite.SIZE];
 			}
 		}
 	}
@@ -78,8 +80,8 @@ public class Screen {
 				if (x_abs < 0) x_abs = 0;
 
 				//this only renders if the pixel isn't alpha pink
-				int color = sprite.pixels[xsprite + y * sprite.SIZE];
-				if (color != 0xFFFF00FF) pixels[x_abs + (y_abs * width)] = color;
+				int colour = sprite.pixels[xsprite + y * sprite.SIZE];
+				if (colour != 0xFFFF00FF) pixels[x_abs + (y_abs * width)] = colour;
 
 			}
 		}

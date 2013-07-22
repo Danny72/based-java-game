@@ -27,7 +27,7 @@ public class SpriteSheet {
 			BufferedImage image = ImageIO.read(SpriteSheet.class.getResource(path));
 			int w = image.getWidth();
 			int h = image.getHeight();
-			//breaks down the image into component pixels
+			//breaks down the image into component pixels, storing the colour
 			pixels = image.getRGB(0, 0, w, h, null, 0, w);
 		} catch (IOException e) {
 			e.printStackTrace();
