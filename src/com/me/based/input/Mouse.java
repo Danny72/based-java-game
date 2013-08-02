@@ -23,6 +23,8 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	}
 
 	public void mouseDragged(MouseEvent e) {
+		mousex = e.getX();
+		mousey = e.getY();
 	}
 
 	public void mouseMoved(MouseEvent e) {

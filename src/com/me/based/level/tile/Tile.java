@@ -15,8 +15,9 @@ public class Tile {
 	public static Tile path = new PathTile(Sprite.path);
 	public static Tile water = new WaterTile(Sprite.water);
 	public static Tile spawn = new VoidTile(Sprite.spawn);
-	public static Tile test = new VoidTile(Sprite.test);
+	public static Tile mob = new MobTile(Sprite.mob);
 	public static Tile void_tile = new VoidTile(Sprite.void_sprite);
+	
 	
 	//STATIC COLOURS FOR TILES
 	public final static int col_grass = 0xFF00FF00;
@@ -25,7 +26,7 @@ public class Tile {
 	public final static int col_path = 0xFFFF0000;
 	public final static int col_water = 0XFF3586FF;
 	public final static int col_spawn = 0XFFFFAAFF;
-	public final static int col_test = 0XFFFFFFAA;
+	public final static int col_mob = 0X00FFFFFF;
 
 	public Tile(Sprite sprite) {
 		this.sprite = sprite;

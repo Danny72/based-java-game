@@ -1,6 +1,12 @@
 package com.me.based.entity.mob;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.me.based.Game;
 import com.me.based.entity.Entity;
+import com.me.based.entity.projectile.PlayerProjectile;
+import com.me.based.entity.projectile.Projectile;
 import com.me.based.graphics.Screen;
 import com.me.based.graphics.Sprite;
 import com.me.based.input.Keyboard;
@@ -12,6 +18,11 @@ public abstract class Mob extends Entity {
 	protected boolean moving = false;
 	protected Keyboard input;
 	protected int anim = 0;
+	protected int move_speed;
+	protected int xb, yb;
+	protected int health;
+
+	//an ArrayList of this players projectiles
 
 	public void move(int newx, int newy) {
 
@@ -29,16 +40,37 @@ public abstract class Mob extends Entity {
 		if (newy < 0) dir = 0;
 
 		if (!collision(newx, newy)) {
-			x += newx;
-			y += newy;
+			x += newx * move_speed;
+			y += newy * move_speed;
 		}
 	}
 
 	public void update() {
 	}
 	
-	protected void shoot(int x, int y, double dir) {
-		
+	public int get_xb() {
+		return xb;
+	}
+
+	public int get_yb() {
+		return yb;
+	}
+	
+	public int get_health() {
+		return health;
+	}
+	
+	public void set_health(int damage) {
+		health -= damage;
+	}
+	
+	protected void remove_projectile(Projectile p) {
+		level.remove_projectile(p);
+	}
+
+	protected void shoot(int x, int y, double dir, int owner) {
+		Projectile p = new PlayerProjectile(x, y, dir, owner);
+		level.add_projectile(p);
 	}
 
 	public void render(Screen screen) {
@@ -49,8 +81,8 @@ public abstract class Mob extends Entity {
 		boolean solid = false;
 		//loop for checking each corner of tile
 		for (int i = 0; i < 4; i++) {
-			int xc = ((x + newx) + i % 2 * 7 - 4) >> 4;
-			int yc = ((y + newy) + i / 2 * 7 + 6) >> 4;
+			int xc = ((x + newx) + i % 2 * 8 - 1) >> 6;
+			int yc = ((y + newy) + i / 2 * 7 + 20) >> 6;
 			if (level.get_tile(xc, yc).solid()) solid = true;
 		}
 		return solid;

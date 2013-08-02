@@ -8,9 +8,10 @@ import com.me.based.level.Level;
 public abstract class Entity {
 
 	protected int x, y;
-	private boolean removed = false;
+	protected boolean removed = false;
 	protected Level level;
 	protected final Random random = new Random();
+	protected int type;
 
 	public void update() {
 		
@@ -38,5 +39,9 @@ public abstract class Entity {
 	
 	public int get_y() {
 		return y;
+	}
+	
+	public int get_type() {
+		return type;
 	}
 }

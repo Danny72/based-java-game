@@ -12,7 +12,10 @@ public class SpriteSheet {
 	public int[] pixels;
 	
 	//creates static sprite sheet that can be referenced by SpriteSheet.tiles
-	public static SpriteSheet tiles = new SpriteSheet("/textures/spritesheet.png", 256);
+	public static SpriteSheet player = new SpriteSheet("/textures/player.png", 256);
+	public static SpriteSheet oppo = new SpriteSheet("/textures/oppo.png", 256);
+	public static SpriteSheet projectile = new SpriteSheet("/textures/projectiles/projectiles.png", 48);
+	public static SpriteSheet textures = new SpriteSheet("/textures/level_textures.png", 512);
 
 	public SpriteSheet(String path, int size) {
 		this.path = path;
