@@ -7,14 +7,17 @@ public class WaterTile extends Tile {
 
 	public WaterTile(Sprite sprite) {
 		super(sprite);
+		tile_type = "water";
 	}
 
 	public void render(int x, int y, Screen screen) {
 		screen.render_tile(x, y, this);
 	}
 	
-	public boolean solid() {
+	public boolean slow_move() {
 		return true;
 	}
+	
+	
 
 }

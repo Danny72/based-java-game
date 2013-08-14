@@ -6,15 +6,12 @@ import com.me.based.level.tile.Tile;
 
 public class PlayerProjectile extends Projectile {
 
-	public static final int FIRE_RATE = 15; //higher is slower
-
 	public PlayerProjectile(int x, int y, double angle, int owner) {
 		super(x, y, angle, owner);
-		range = 250;
+		range = 500;
 		damage = 20;
-		speed = 3;
-		sprite = Sprite.projectile_player;
-		damage = 20;
+		speed = 20;
+		sprite = Sprite.projectile_oppo;
 		owner = 0;
 
 		newx = speed * Math.cos(angle);

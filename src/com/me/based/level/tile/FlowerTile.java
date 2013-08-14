@@ -7,6 +7,7 @@ public class FlowerTile extends Tile {
 
 	public FlowerTile(Sprite sprite) {
 		super(sprite);
+		tile_type = "flower";
 	}
 	
 	public void render(int x, int y, Screen screen) {

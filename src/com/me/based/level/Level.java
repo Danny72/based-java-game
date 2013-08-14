@@ -2,11 +2,13 @@ package com.me.based.level;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import com.me.based.Game;
 import com.me.based.entity.Entity;
 import com.me.based.entity.mob.Mob;
 import com.me.based.entity.mob.Oppo;
+import com.me.based.entity.mob.Player;
 import com.me.based.entity.projectile.PlayerProjectile;
 import com.me.based.entity.projectile.Projectile;
 import com.me.based.graphics.Screen;
@@ -22,6 +24,8 @@ public class Level {
 
 	private List<Entity> entities = new ArrayList<Entity>();
 	private List<Projectile> projectiles = new ArrayList<Projectile>();
+	
+	private Random random;
 
 	public static Level spawn = new SpawnLevel("/levels/spawn.png");
 
@@ -30,14 +34,20 @@ public class Level {
 		width = w;
 		height = h;
 		tiles = new int[width * height];
+		
 		generate_level();
 	}
 
 	//constructor for image based level
 	public Level(String path) {
 		tiles = new int[64 * 64 + 2];
+		random = new Random();
 		load_level(path);
 		generate_level();
+	}
+	
+	public Oppo get_current_oppo() {
+		return (Oppo) entities.get(1);
 	}
 
 	public void set_spawn(int x, int y) {
@@ -55,9 +65,15 @@ public class Level {
 	protected void load_level(String path) {
 
 	}
+	
+	public void spawn_new_mob(int type) {
+		Oppo oppo = new Oppo(random.nextInt(4000), random.nextInt(4000), 1);
+		oppo.init_level(this);
+		System.out.println(random.nextInt(500 * 2) + " | " + random.nextInt(500 * 2 / 16 * 9));
+		this.add(oppo);
+	}
 
 	public void update() {
-		//System.out.println(Game.get_width() + " | " + Game.get_height());
 		for (int i = 0; i < entities.size(); i++) {
 			entities.get(i).update();
 		}
@@ -90,18 +106,27 @@ public class Level {
 	public void projectile_hit(Projectile p) {
 
 		for (Entity e : entities) {
-			if (e instanceof Oppo) {
-				int x = (int) e.get_x();
-				int y = (int) e.get_y();
-				double px = p.get_prox();
-				double py = p.get_proy();
-				if (x - 20 < px && x + 20 > px && y - 30 < py && y + 30 > py) {
-					((Oppo) e).set_health(10);
-					p.remove();
-				}
+			if (e instanceof Oppo && p.get_owner() == 0) {
+				if (projectile_collision((Mob)e, p)) p.remove();
 			}
+			if (e instanceof Player && p.get_owner() == 1) {
+				if (projectile_collision((Mob)e, p)) p.remove();
+			}
+			
 		}
 
+	}
+	
+	public boolean projectile_collision(Mob m, Projectile p) {
+		int x = (int) m.get_x();
+		int y = (int) m.get_y();
+		double px = p.get_prox();
+		double py = p.get_proy();
+		if (x - 20 < px && x + 20 > px && y - 30 < py && y + 30 > py) {
+			m.set_health(p.get_damage());
+			return true;
+		}
+		return false;
 	}
 
 	public void add(Entity e) {

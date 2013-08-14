@@ -7,6 +7,7 @@ public class Tile {
 
 	public int x, y;
 	public Sprite sprite;
+	protected String tile_type;
 
 	//static references to tiles
 	public static Tile grass = new GrassTile(Sprite.grass);
@@ -36,8 +37,16 @@ public class Tile {
 	public void render(int x, int y, Screen screen) {
 
 	}
+	
+	public String get_type() {
+		return tile_type;
+	}
 
 	public boolean solid() {
+		return false;
+	}
+	
+	public boolean slow_move() {
 		return false;
 	}
 

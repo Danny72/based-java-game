@@ -12,5 +12,9 @@ public class VoidTile extends Tile {
 	public void render(int x, int y, Screen screen) {
 		screen.render_tile(x, y, this);
 	}
+	
+	public boolean solid() {
+		return true;
+	}
 
 }
