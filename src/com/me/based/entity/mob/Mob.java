@@ -110,9 +110,7 @@ public abstract class Mob extends Entity {
 		level.remove_projectile(p);
 	}
 
-	protected void shoot(int x, int y, double dir, int owner) {
-		Projectile p = new PlayerProjectile(x, y, dir, owner);
-		level.add_projectile(p);
+	protected void shoot(int x, int y, double dir) {	
 	}
 
 	public void render(Screen screen) {

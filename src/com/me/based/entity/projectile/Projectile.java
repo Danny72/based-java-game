@@ -24,6 +24,29 @@ public abstract class Projectile extends Entity {
 		this.y = y;
 		this.angle = angle;
 		this.owner = owner;
+		sprite = Sprite.projectile_player;
+	}
+	
+	protected double calc_distance() {
+		double dist = 0;
+		//calc the hypot using pythag
+		dist = Math.sqrt(Math.abs(Math.pow(xorigin - x, 2)) + Math.pow(yorigin - y, 2));
+		return dist;
+	}
+	
+	protected void move() {
+		x += newx;
+		y += newy;
+		level.projectile_hit(this);
+		if (calc_distance() > range) {
+			removed = true;
+		}
+
+	}
+	
+	public void update() {
+		if (level.tile_collision(x, y, newx, newy, 8)) remove();
+		else move();
 	}
 	
 	public int get_owner() {
@@ -54,13 +77,8 @@ public abstract class Projectile extends Entity {
 		return damage;
 	}
 	
-
-	protected void move() {
-
-	}
-
 	public void render(Screen screen) {
-
+		screen.render_projectile((int) x - 8, (int) y - 8, this);
 	}
 
 }

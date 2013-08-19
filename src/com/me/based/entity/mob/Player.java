@@ -2,6 +2,7 @@ package com.me.based.entity.mob;
 
 import com.me.based.Game;
 import com.me.based.entity.projectile.PlayerProjectile;
+import com.me.based.entity.projectile.Projectile;
 import com.me.based.graphics.Screen;
 import com.me.based.graphics.Sprite;
 import com.me.based.input.Keyboard;
@@ -92,12 +93,16 @@ public class Player extends Mob {
 		clear();
 		update_shooting();
 	}
+	protected void shoot(int x, int y, double dir) {
+		Projectile p = new PlayerProjectile(x, y, dir, 0);
+		level.add_projectile(p);
+	}
 
 	protected void update_shooting() {
 		if (Mouse.getb() == 1 && fire_rate <= 0) {
 			double dx = Mouse.getx() - Game.get_width() / 2;
 			double dy = Mouse.gety() - Game.get_height() / 2;
-			shoot(x, y - jump_offset, Math.atan2(dy, dx), 0);
+			shoot(x, y - jump_offset, Math.atan2(dy, dx));
 			fire_rate = PlayerProjectile.FIRE_RATE;
 		}
 	}

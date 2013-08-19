@@ -3,6 +3,7 @@ package com.me.based.entity.mob;
 import java.util.Random;
 
 import com.me.based.Game;
+import com.me.based.entity.projectile.MobProjectile;
 import com.me.based.entity.projectile.PlayerProjectile;
 import com.me.based.entity.projectile.Projectile;
 import com.me.based.graphics.Screen;
@@ -55,6 +56,11 @@ public class Oppo extends Mob {
 		update_shooting();
 	}
 	
+	protected void shoot(int x, int y, double dir) {
+		Projectile p = new MobProjectile(x, y, dir, 1);
+		level.add_projectile(p);
+	}
+	
 	protected void update_shooting() {
 		
 		if (rand.nextInt(100) < 3 && fire_rate <= 0) {
@@ -63,7 +69,7 @@ public class Oppo extends Mob {
 			if (dir == 2) angle = Math.PI/2;
 			if (dir == 3) angle = Math.PI;
 			if (dir == 0) angle = Math.PI + Math.PI/2;
-			shoot(x, y - jump_offset, angle, 1);
+			shoot(x, y - jump_offset, angle);
 			fire_rate = Projectile.FIRE_RATE;
 		}
 	}
