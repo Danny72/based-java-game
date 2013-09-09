@@ -13,6 +13,7 @@ public class Oppo extends Mob {
 
 	Random rand;
 	private int rand_num;
+	private int newx = 0, newy = 0;
 
 	public Oppo(int x, int y, int type) {
 		this.x = x;
@@ -22,6 +23,7 @@ public class Oppo extends Mob {
 		this.type = type;
 		health = 100;
 		fire_rate = Projectile.FIRE_RATE;
+		dir = 2;
 	}
 	
 	public void update() {
@@ -39,14 +41,14 @@ public class Oppo extends Mob {
 		//changes direction every 40 updates
 		if (anim % 40 >= 39) rand_num = rand.nextInt(4);
 
-		int newx = 0, newy = 0;
+		
 		if (rand_num == 0) newy--;
 		if (rand_num == 1) newy++;
 		if (rand_num == 2) newx--;
 		if (rand_num == 3) newx++;
 
 		if (newx != 0 || newy != 0) {
-			move(newx, newy);
+			//move(newx, newy);
 			moving = true;
 		} else {
 			moving = false;
@@ -112,6 +114,10 @@ public class Oppo extends Mob {
 			} else sprite = Sprite.oppo_side;
 		}
 		//calls the render method for rendering the player using the correct sprite
-		screen.render_player(x - 32, y - 32, sprite, null, flip, 0);
+		
+		if (type == 1) screen.render_sprite(-0.6, 0.0, 7.5, 0.5, sprite);
+		if (type == 2) screen.render_sprite(-2, 0.0, 7.5, 0.5, sprite);
+		if (type == 3) screen.render_sprite(4, 0.0, 7.5, 0.5, sprite);
+		
 	}
 }

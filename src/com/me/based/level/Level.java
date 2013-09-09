@@ -24,17 +24,17 @@ public class Level {
 
 	private List<Entity> entities = new ArrayList<Entity>();
 	private List<Projectile> projectiles = new ArrayList<Projectile>();
-	
+
 	private Random random;
 
-	public static Level spawn = new SpawnLevel("/levels/spawn.png");
+	public static Level spawn = new SpawnLevel("/levels/diamond.png");
 
 	//constructor for random level generator
 	public Level(int w, int h) {
 		width = w;
 		height = h;
 		tiles = new int[width * height];
-		
+
 		generate_level();
 	}
 
@@ -45,7 +45,7 @@ public class Level {
 		load_level(path);
 		generate_level();
 	}
-	
+
 	public Oppo get_current_oppo() {
 		return (Oppo) entities.get(1);
 	}
@@ -65,7 +65,7 @@ public class Level {
 	protected void load_level(String path) {
 
 	}
-	
+
 	public void spawn_new_mob(int type) {
 		Oppo oppo = new Oppo(random.nextInt(4000), random.nextInt(4000), 1);
 		oppo.init_level(this);
@@ -106,17 +106,21 @@ public class Level {
 	public void projectile_hit(Projectile p) {
 
 		for (Entity e : entities) {
+			//if player projec hits oppo
 			if (e instanceof Oppo && p.get_owner() == 0) {
-				if (projectile_collision((Mob)e, p)) p.remove();
+				if (projectile_collision((Mob) e, p)) p.remove();
 			}
+			//if oppo projec hits player
 			if (e instanceof Player && p.get_owner() == 1) {
-				if (projectile_collision((Mob)e, p)) p.remove();
+				//if projectile hits player, kill it
+				if (projectile_collision((Mob) e, p)) p.remove();
+				//if projectile hits bat, flip it
+				int ball_hit = bat_collision((Player) e, p);
+				if (ball_hit != 0) p.change_direction(ball_hit);
 			}
-			
 		}
-
 	}
-	
+
 	public boolean projectile_collision(Mob m, Projectile p) {
 		int x = (int) m.get_x();
 		int y = (int) m.get_y();
@@ -127,6 +131,32 @@ public class Level {
 			return true;
 		}
 		return false;
+	}
+
+	public int bat_collision(Player m, Projectile p) {
+		int x = (int) m.get_x();
+		int z = (int) m.get_y();
+		double px = p.get_prox();
+		double py = p.get_proz();
+		if (5 >= py && 3 <= py) {
+			
+			m.set_health(p.get_damage());
+			if (m.get_swing_state() == 4)	{
+	
+				return 1;
+			}
+			if (m.get_swing_state() == 5) {
+				
+				return 2;
+			}
+				
+			if (m.get_swing_state() == 6)	{
+
+				return 3;
+			}
+			
+		}
+		return 0;
 	}
 
 	public void add(Entity e) {
@@ -174,7 +204,6 @@ public class Level {
 
 		for (int i = 0; i < projectiles.size(); i++) {
 			Projectile p = projectiles.get(i);
-			//System.out.println(p.get_owner());
 			p.render(screen);
 		}
 	}
@@ -187,10 +216,14 @@ public class Level {
 		if (tiles[x + y * width] == Tile.col_grass) return Tile.grass;
 		if (tiles[x + y * width] == Tile.col_flower) return Tile.flower;
 		if (tiles[x + y * width] == Tile.col_rock) return Tile.rock;
-		if (tiles[x + y * width] == Tile.col_path) return Tile.path;
+		if (tiles[x + y * width] == Tile.col_line) return Tile.line;
+		if (tiles[x + y * width] == Tile.col_line_flip) return Tile.line_flip;
 		if (tiles[x + y * width] == Tile.col_water) return Tile.water;
 		if (tiles[x + y * width] == Tile.col_spawn) return Tile.void_tile;
 		if (tiles[x + y * width] == Tile.col_mob) return Tile.mob;
+		if (tiles[x + y * width] == Tile.col_green) return Tile.green_tile;
+		if (tiles[x + y * width] == Tile.col_brown) return Tile.brown_tile;
+		if (tiles[x + y * width] == Tile.col_white) return Tile.white_tile;
 		return Tile.void_tile;
 	}
 

@@ -6,13 +6,16 @@ import com.me.based.entity.mob.Player;
 import com.me.based.entity.projectile.Projectile;
 import com.me.based.input.Mouse;
 import com.me.based.level.tile.Tile;
+import com.me.based.graphics.Render3D;
 
-public class Screen {
 
-	private int width, height;
+public abstract class Screen {
+
+	protected int width, height;
 	public int[] pixels;
 	public final int MAP_SIZE = 64;
 	public final int MAP_SIZE_MASK = MAP_SIZE - 1;
+	public int[] floor_pixels;
 
 	public int xoffset, yoffset;
 
@@ -28,7 +31,7 @@ public class Screen {
 			tiles[i] = random.nextInt(0xffffff);
 		}
 	}
-
+	
 	public int get_width() {
 		return width;
 	}
@@ -44,82 +47,36 @@ public class Screen {
 		}
 	}
 
-	public void render_sprite(int xp, int yp, Sprite sprite, boolean fixed) {
-		if (fixed) {
-			xp -= xoffset;
-			yp -= yoffset;
-		}
-		for (int y = 0; y < sprite.get_height(); y++) {
-			//calculate the absolute y pos so it's centred
-			int y_abs = y + yp;
-			for (int x = 0; x < sprite.get_width(); x++) {
-				//calculate the absolute x pos so it's centred
-				int x_abs = x + xp;
-				
-				int xdiff = x - (sprite.get_width()/2);
-				int ydiff = y - (sprite.get_height()/2);
-				
-				double angle = Math.atan2(ydiff, xdiff);
-				double distance = Math.sqrt(xdiff*xdiff + ydiff*ydiff);
-				
-				int newx = (int)(Math.sin(angle + Math.toRadians(45))*distance) + xp;
-                int newy = (int)(Math.cos(angle + Math.toRadians(45))*distance) + yp;
-                
-				//clipping: if we exceed bounds of screen, don't draw
-				if (x_abs < 0 || x_abs >= width || y_abs < 0 || y_abs >= height) continue;
-				//System.out.println(x_abs + ":" + y_abs);
-				//System.out.println(newx + ":" + newy);
-				//System.out.println("---------");
-				pixels[newx + newy * width] = sprite.pixels[x + y * sprite.get_width()];
-			}
-		}
+	public void set_offset(int newx_offset, int newy_offset) {
+		xoffset = newx_offset;
+		yoffset = newy_offset;
 	}
 
-	//renders a specified entity onto the screen
+	public int get_xoffset() {
+		return xoffset;
+	}
+
+	public int get_yoffset() {
+		return yoffset;
+	}
+	
+	public void render_tile(int xp, int yp, Tile tile, boolean flip) {
+		
+	}
+	
 	public void render_projectile(int xp, int yp, Projectile pro) {
-		xp -= xoffset;
-		yp -= yoffset;
-		for (int y = 0; y < pro.get_sprite_height(); y++) {
-			int y_abs = y + yp;
-			for (int x = 0; x < pro.get_sprite_width(); x++) {
-				int x_abs = x + xp;
-							
-				//if a tile is completely off the screen, don't render it
-				//x_abs allows us to partially render tiles on the x-axis at 0
-				if (x_abs < -pro.get_sprite_width() || x_abs >= width || y_abs < 0 || y_abs >= height) break;
-				if (x_abs < 0) x_abs = 0;
-				//System.out.println("newx: " + newx + " | newy: " + newy);
-				int colour = pro.get_sprite().pixels[x + y * pro.get_sprite_width()];
-				if (colour != 0xFFFF00FF) pixels[x_abs + (y_abs * width)] = colour;
-			}
-		}
+		
 	}
-
-	//renders a specified tile onto the screen
-	public void render_tile(int xp, int yp, Tile tile) {
-		xp -= xoffset;
-		yp -= yoffset;
-		for (int y = 0; y < tile.sprite.get_width(); y++) {
-			int y_abs = y + yp;
-			for (int x = 0; x < tile.sprite.get_width(); x++) {
-				int x_abs = x + xp;
-				//if a tile is completely off the screen, don't render it
-				//x_abs allows us to partially render tiles on the x-axis at 0
-				if (x_abs < -tile.sprite.get_width() || x_abs >= width || y_abs < 0 || y_abs >= height) break;
-				if (x_abs < 0) x_abs = 0;
-				//System.out.println(tile.sprite.pixels.length);
-				int colour = tile.sprite.pixels[x + y * tile.sprite.get_width()];
-				if (colour != 0xFFFF00FF) pixels[x_abs + (y_abs * width)] = colour;
-				//pixels[x_abs + (y_abs * width)] = tile.sprite.pixels[x + y * tile.sprite.SIZE];
-			}
-		}
+	
+	public void render_floor() {
+		
 	}
-
+	
 	public void render_player(int xp, int yp, Sprite bspr, Sprite head, boolean flip, int jump_offset) {
 		xp -= xoffset;
 		yp -= yoffset;
 		yp -= jump_offset;
-		for (int y = 0; y < bspr.get_width(); y++) {
+		for (int y = 0; y < bspr.get_height(); y++) {
 			int y_abs = y + yp;
 			for (int x = 0; x < bspr.get_width(); x++) {
 				int x_abs = x + xp;
@@ -147,18 +104,9 @@ public class Screen {
 			}
 		}
 	}
-
-	public void set_offset(int newx_offset, int newy_offset) {
-		xoffset = newx_offset;
-		yoffset = newy_offset;
-	}
-
-	public int get_xoffset() {
-		return xoffset;
-	}
-
-	public int get_yoffset() {
-		return yoffset;
+	
+	public void render_sprite(double x, double y, double z, double h_off, Sprite sp) {
+		
 	}
 
 }

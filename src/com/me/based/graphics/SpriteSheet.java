@@ -16,6 +16,9 @@ public class SpriteSheet {
 	public static SpriteSheet oppo = new SpriteSheet("/textures/oppo.png", 256);
 	public static SpriteSheet projectile = new SpriteSheet("/textures/projectiles/projectiles.png", 48);
 	public static SpriteSheet textures = new SpriteSheet("/textures/level_textures.png", 512);
+	
+	public static SpriteSheet baseball_player = new SpriteSheet("/textures/baseball_player2.png", 256);
+	public static SpriteSheet baseball_field = new SpriteSheet("/textures/baseball_field.png", 256);
 
 	public SpriteSheet(String path, int size) {
 		this.path = path;

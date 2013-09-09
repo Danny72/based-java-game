@@ -8,6 +8,7 @@ import com.me.based.level.Level;
 public abstract class Entity {
 
 	protected int x, y;
+	protected double z;
 	protected boolean removed = false;
 	protected Level level;
 	protected final Random random = new Random();
@@ -44,4 +45,6 @@ public abstract class Entity {
 	public int get_type() {
 		return type;
 	}
+	
+	
 }

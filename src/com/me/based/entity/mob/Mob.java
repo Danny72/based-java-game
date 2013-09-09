@@ -98,7 +98,7 @@ public abstract class Mob extends Entity {
 	}
 
 	public void set_health(double damage) {
-		System.out.println("hit for " + (int) damage + " damage");
+		//System.out.println("hit for " + (int) damage + " damage");
 		health -= damage;
 		if (health <= 0) {
 			level.remove(this);

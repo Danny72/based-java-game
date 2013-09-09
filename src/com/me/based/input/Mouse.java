@@ -5,19 +5,19 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 public class Mouse implements MouseListener, MouseMotionListener {
-	
+
 	private static int mousex = -1;
 	private static int mousey = -1;
 	private static int mouseb = -1;
-	
+
 	public static int getx() {
 		return mousex;
 	}
-	
+
 	public static int gety() {
 		return mousey;
 	}
-	
+
 	public static int getb() {
 		return mouseb;
 	}
@@ -33,7 +33,7 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	}
 
 	public void mouseClicked(MouseEvent e) {
-		
+
 	}
 
 	public void mouseEntered(MouseEvent e) {

@@ -7,8 +7,8 @@ public class MobProjectile extends Projectile {
 	public MobProjectile(int x, int y, double angle, int owner) {
 		super(x, y, angle, owner);
 		range = 500;
-		damage = 20;
-		speed = 20;
+		damage = 0;
+		speed = 0.3;
 		sprite = Sprite.projectile_player;
 		owner = 0;
 
